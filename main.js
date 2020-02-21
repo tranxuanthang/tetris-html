@@ -1,8 +1,7 @@
 'use strict'
 
 class Game {
-  constructor(speed = 800) {
-    this.speed = speed
+  constructor() {
     this.boardWidth = 10
     this.boardHeight = 23
     this.currentBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0))
@@ -35,18 +34,13 @@ class Game {
 
   play() {
     setInterval(() => {
-      this.updateNextTick()
+      this.progress()
       this.updateCurrentBoard()
       this.draw()
-      // this.printBoard()
-    }, this.speed);
+    }, 800);
   }
 
-  pause() {
-
-  }
-
-  updateNextTick() {
+  progress() {
     let nextTetromino = new this.currentTetromino.constructor(this.currentTetromino.row + 1, this.currentTetromino.col, this.currentTetromino.angle)
     if (!this.hasBottomCornerCollision(nextTetromino) && !this.hasLandedCollision(nextTetromino)) {
       this.currentTetromino.fall()
@@ -57,24 +51,9 @@ class Game {
     }
   }
 
-  printBoard() {
-    let str = '[\n'
-    for (let i = 0; i < this.currentBoard.length; i++) {
-      str += '  ['
-      for (let j = 0; j < this.currentBoard[0].length; j++) {
-        str = str + this.currentBoard[i][j]
-        if (j < this.boardWidth - 1)
-          str += ', '
-      }
-      str = str + '],\n'
-    }
-    str += ']'
-    console.log(str)
-  }
-
   updateCurrentBoard() {
-    for (let i = 0; i < this.landedBoard.length; i++) {
-      for (let j = 0; j < this.landedBoard[0].length; j++) {
+    for (let i = 0; i < this.boardHeight; i++) {
+      for (let j = 0; j < this.boardWidth; j++) {
         this.currentBoard[i][j] = this.landedBoard[i][j]
       }
     }
@@ -158,7 +137,7 @@ class Game {
   }
 
   tryMoveDown() {
-    this.updateNextTick()
+    this.progress()
     this.updateCurrentBoard()
     this.draw()
   }
@@ -266,102 +245,74 @@ class Tetromino {
 class LShape extends Tetromino { }
 
 LShape.shapes =
-  [
-    [
-      [1, 0],
-      [1, 0],
-      [1, 1]
-    ],
-    [
-      [1, 1, 1],
-      [1, 0, 0]
-    ],
-    [
-      [1, 1],
-      [0, 1],
-      [0, 1]
-    ],
-    [
-      [0, 0, 1],
-      [1, 1, 1]
-    ],
-  ]
+  [[[1, 0],
+    [1, 0],
+    [1, 1]],
+
+   [[1, 1, 1],
+    [1, 0, 0]],
+
+   [[1, 1],
+    [0, 1],
+    [0, 1]],
+
+   [[0, 0, 1],
+    [1, 1, 1]]]
 
 LShape.color = 'rgb(255, 87, 34)'
 
 class JShape extends Tetromino { }
 
 JShape.shapes =
-  [
-    [
-      [0, 2],
-      [0, 2],
-      [2, 2]
-    ],
-    [
-      [2, 0, 0],
-      [2, 2, 2]
-    ],
-    [
-      [2, 2],
-      [2, 0],
-      [2, 0]
-    ],
-    [
-      [2, 2, 2],
-      [0, 0, 2]
-    ],
-  ]
+  [[[0, 2],
+    [0, 2],
+    [2, 2]],
+
+   [[2, 0, 0],
+    [2, 2, 2]],
+
+   [[2, 2],
+    [2, 0],
+    [2, 0]],
+
+   [[2, 2, 2],
+    [0, 0, 2]]]
 
 JShape.color = 'rgb(63, 81, 181)'
 
 class OShape extends Tetromino { }
 
 OShape.shapes =
-  [
-    [
-      [3, 3],
-      [3, 3]
-    ],
-    [
-      [3, 3],
-      [3, 3]
-    ],
-    [
-      [3, 3],
-      [3, 3]
-    ],
-    [
-      [3, 3],
-      [3, 3]
-    ],
-  ]
+  [[[3, 3],
+    [3, 3]],
+
+   [[3, 3],
+    [3, 3]],
+
+   [[3, 3],
+    [3, 3]],
+
+   [[3, 3],
+    [3, 3]]]
 
 OShape.color = 'rgb(255, 235, 59)'
 
 class TShape extends Tetromino { }
 
 TShape.shapes =
-  [
-    [
-      [0, 4, 0],
-      [4, 4, 4]
-    ],
-    [
-      [4, 0],
-      [4, 4],
-      [4, 0]
-    ],
-    [
-      [4, 4, 4],
-      [0, 4, 0]
-    ],
-    [
-      [0, 4],
-      [4, 4],
-      [0, 4]
-    ],
-  ]
+  [[[0, 4, 0],
+    [4, 4, 4]],
+
+   [[4, 0],
+    [4, 4],
+    [4, 0]],
+
+   [[4, 4, 4],
+    [0, 4, 0]],
+
+   [[0, 4],
+    [4, 4],
+    [0, 4]]]
 
 TShape.color = 'rgb(156, 39, 176)'
 
